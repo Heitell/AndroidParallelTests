@@ -18,9 +18,13 @@ class AppLauncher : ExternalResource() {
         scenario = ActivityScenario.launch(MainActivity::class.java)
     }
 
-    override fun after() {
+    /** Закрыть экран посреди теста, например чтобы проверить перезапуск. */
+    fun close() {
         scenario?.close()
+        scenario = null
     }
+
+    override fun after() = close()
 }
 
 @OptIn(ExperimentalTestApi::class)

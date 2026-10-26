@@ -18,6 +18,15 @@ object AppGraph {
     var api: CatalogApi = build(DEFAULT_BASE_URL, timeoutMs = 15_000)
         private set
 
+    /** Хранилище последнего запроса. Подключается при старте экрана. */
+    @Volatile
+    var lastQuery: LastQuery? = null
+        private set
+
+    fun attach(context: android.content.Context) {
+        if (lastQuery == null) lastQuery = LastQuery(context.applicationContext)
+    }
+
     fun configure(baseUrl: String, timeoutMs: Long = 15_000) {
         api = build(baseUrl, timeoutMs)
     }

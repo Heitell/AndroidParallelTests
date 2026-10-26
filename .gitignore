@@ -8,3 +8,5 @@ build/
 captures/
 /bench-out/
 /marathon/Marathonfile.run
+/out/
+__pycache__/

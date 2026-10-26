@@ -13,6 +13,7 @@ import com.example.catalog.support.Net
 import com.example.catalog.support.Responses
 import com.example.catalog.support.waitForGone
 import com.example.catalog.support.waitForTag
+import com.example.catalog.support.waitForText
 import com.example.catalog.ui.Tags
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -47,14 +48,14 @@ class SearchTest : BaseTest() {
     @Test
     fun searchSendsQueryParameter() {
         searchFor("phone")
-        compose.waitForTag(Tags.item(7))
+        compose.waitForText("Found phone")
         assertEquals("phone", lastQuery())
     }
 
     @Test
     fun searchShowsFilteredResults() {
         searchFor("phone")
-        compose.waitForTag(Tags.item(7))
+        compose.waitForText("Found phone")
         compose.onNodeWithTag(Tags.item(7)).assertTextContains("Found phone")
         compose.waitForGone(Tags.item(1))
     }
@@ -78,7 +79,7 @@ class SearchTest : BaseTest() {
     @Test
     fun clearResetsQueryAndReloadsFullList() {
         searchFor("phone")
-        compose.waitForTag(Tags.item(7))
+        compose.waitForText("Found phone")
         compose.onNodeWithTag(Tags.CLEAR_BUTTON).performClick()
         compose.waitForTag(Tags.item(1))
         assertNull(lastQuery())
@@ -91,14 +92,14 @@ class SearchTest : BaseTest() {
         compose.waitForTag(Tags.LIST)
         compose.onNodeWithTag(Tags.SEARCH_FIELD).performTextInput("laptop")
         compose.onNodeWithTag(Tags.SEARCH_FIELD).performImeAction()
-        compose.waitForTag(Tags.item(7))
+        compose.waitForText("Found laptop")
         assertEquals("laptop", lastQuery())
     }
 
     @Test
     fun searchTrimsWhitespace() {
         searchFor("  phone  ")
-        compose.waitForTag(Tags.item(7))
+        compose.waitForText("Found phone")
         assertEquals("phone", lastQuery())
     }
 

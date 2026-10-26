@@ -6,6 +6,7 @@ import com.example.catalog.data.AppGraph
 import com.example.catalog.data.ItemDetails
 import com.example.catalog.data.toUserMessage
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -16,19 +17,35 @@ sealed interface DetailsState {
     data class Error(val message: String) : DetailsState
 }
 
-class DetailsViewModel(private val id: Int) : ViewModel() {
+/**
+ * Одна модель на экран карточки. Переживает поворот экрана; при выходе из карточки
+ * запрос отменяется, а при повторном открытии товар загружается заново.
+ */
+class DetailsViewModel : ViewModel() {
     private val _state = MutableStateFlow<DetailsState>(DetailsState.Loading)
     val state: StateFlow<DetailsState> = _state
+    private var id: Int? = null
+    private var job: Job? = null
 
-    init {
+    fun open(id: Int) {
+        if (this.id == id) return
+        this.id = id
         load()
+    }
+
+    fun close() {
+        job?.cancel()
+        id = null
+        _state.value = DetailsState.Loading
     }
 
     fun retry() = load()
 
     private fun load() {
+        val id = id ?: return
+        job?.cancel()
         _state.value = DetailsState.Loading
-        viewModelScope.launch {
+        job = viewModelScope.launch {
             _state.value = try {
                 DetailsState.Content(AppGraph.api.item(id))
             } catch (e: CancellationException) {

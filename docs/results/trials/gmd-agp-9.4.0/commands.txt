@@ -1,0 +1,4 @@
+  WARNING: The option setting 'android.experimental.androidTest.numManagedDeviceShards=2' is experimental.
+  Running instrumentation: /opt/homebrew/share/android-commandlinetools/platform-tools/adb -s emulator-5556 shell "am instrument -r -w -e additionalTestOutputDir /sdcard/Android/media/com.example.catalog/additional_test_output com.example.catalog.test/androidx.test.runner.AndroidJUnitRunner"
+  Running instrumentation: /opt/homebrew/share/android-commandlinetools/platform-tools/adb -s emulator-5554 shell "am instrument -r -w -e additionalTestOutputDir /sdcard/Android/media/com.example.catalog/additional_test_output com.example.catalog.test/androidx.test.runner.AndroidJUnitRunner"
+  BUILD SUCCESSFUL in 4m 46s

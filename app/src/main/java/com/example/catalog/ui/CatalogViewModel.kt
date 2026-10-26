@@ -26,7 +26,8 @@ data class CatalogUiState(
 )
 
 class CatalogViewModel : ViewModel() {
-    private val _state = MutableStateFlow(CatalogUiState())
+    private val store = AppGraph.lastQuery
+    private val _state = MutableStateFlow(CatalogUiState(query = store?.get().orEmpty()))
     val state: StateFlow<CatalogUiState> = _state
     private var job: Job? = null
 
@@ -36,10 +37,14 @@ class CatalogViewModel : ViewModel() {
 
     fun onQueryChange(query: String) = _state.update { it.copy(query = query) }
 
-    fun search() = load(showLoading = true)
+    fun search() {
+        store?.set(_state.value.query.trim())
+        load(showLoading = true)
+    }
 
     fun clearSearch() {
         _state.update { it.copy(query = "") }
+        store?.clear()
         load(showLoading = true)
     }
 

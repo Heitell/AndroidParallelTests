@@ -1,6 +1,7 @@
 # Общие настройки скриптов. Подключается через `source`.
 export ANDROID_HOME="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}"
 export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+command -v adb >/dev/null || { echo "adb не найден: задайте ANDROID_HOME (сейчас $ANDROID_HOME)" >&2; exit 1; }
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_APK="$ROOT/app/build/outputs/apk/debug/app-debug.apk"
 TEST_APK="$ROOT/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk"
@@ -11,8 +12,17 @@ AVDS=(pixel35 pixel35-2 pixel35-3 pixel35-4)
 
 now() { python3 -c 'import time; print(f"{time.time():.3f}")'; }
 
-# Серийные номера запущенных эмуляторов, по порядку портов.
-devices() { adb devices | awk '/^emulator-[0-9]+\tdevice$/ {print $1}' | sort -t- -k2 -n; }
+# Порты эмуляторов этого проекта: emulators.sh поднимает AVDS[i] на порту 5554 + 2i.
+PORTS=(5554 5556 5558 5560)
+
+# Серийные номера запущенных эмуляторов этого проекта, по порядку портов. Чужие эмуляторы не берём.
+devices() {
+  local p
+  for p in "${PORTS[@]}"; do
+    adb devices | grep -q "^emulator-$p"$'\t'"device$" && echo "emulator-$p"
+  done
+  return 0
+}
 
 # Ждать, пока эмуляторы закончат фоновую работу после загрузки: в среднем меньше
 # IDLE_CPU % процессора на эмулятор три замера подряд (раз в 5 с), не дольше IDLE_MAX с.

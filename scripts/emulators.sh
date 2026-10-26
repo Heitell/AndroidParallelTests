@@ -7,6 +7,7 @@ source "$(dirname "$0")/env.sh"
 
 start() {
   local n=$1 log_dir="${LOG_DIR:-$ROOT/bench-out/emulator-logs}"
+  (( n >= 1 && n <= ${#AVDS[@]} )) || { echo "можно от 1 до ${#AVDS[@]} эмуляторов" >&2; exit 2; }
   mkdir -p "$log_dir"
   adb start-server >/dev/null 2>&1
   for ((i = 0; i < n; i++)); do
@@ -23,7 +24,7 @@ start() {
   for ((i = 0; i < n; i++)); do
     local serial="emulator-$((5554 + 2 * i))"
     until [[ "$(adb -s "$serial" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
-      (( $(date +%s) < deadline )) || { echo "не загрузился $serial" >&2; exit 1; }
+      (( $(date +%s) < deadline )) || { echo "не загрузился $serial" >&2; stop; exit 1; }
       sleep 2
     done
     animations_off "$serial"
@@ -31,11 +32,16 @@ start() {
   echo "загружено: $(devices | wc -l | tr -d ' ')"
 }
 
+# Гасит только эмуляторы этого проекта (свои AVD на своих портах), чужие не трогает.
 stop() {
-  for d in $(devices); do adb -s "$d" emu kill >/dev/null 2>&1 || true; done
+  local i pattern
+  for ((i = 0; i < ${#AVDS[@]}; i++)); do
+    adb -s "emulator-${PORTS[$i]}" emu kill >/dev/null 2>&1 || true
+  done
+  pattern="qemu-system.* -avd ($(IFS='|'; echo "${AVDS[*]}")) -port"
   local deadline=$(( $(date +%s) + 60 ))
-  while pgrep -f qemu-system >/dev/null; do
-    (( $(date +%s) < deadline )) || { pkill -f qemu-system || true; break; }
+  while pgrep -f "$pattern" >/dev/null; do
+    (( $(date +%s) < deadline )) || { pkill -f "$pattern" || true; break; }
     sleep 1
   done
 }

@@ -6,9 +6,16 @@ source "$(dirname "$0")/env.sh"
 
 extra=()
 if [[ "${1:-}" == "--orchestrator" ]]; then
-  cache="$HOME/.gradle/caches/modules-2/files-2.1"
-  extra+=("$(find "$cache/androidx.test/orchestrator" -name 'orchestrator-*.apk' | sort | tail -1)")
-  extra+=("$(find "$cache/androidx.test.services/test-services" -name 'test-services-*.apk' | sort | tail -1)")
+  # Версии — из gradle/libs.versions.toml; APK скачиваются с Google Maven один раз в bench-out/apk.
+  version() { sed -n "s/^$1 = \"\(.*\)\"$/\1/p" "$ROOT/gradle/libs.versions.toml"; }
+  fetch() {  # группа-путь артефакт версия
+    local file="$ROOT/bench-out/apk/$2-$3.apk"
+    [[ -s "$file" ]] || { mkdir -p "$(dirname "$file")"
+      curl -fsSL -o "$file" "https://dl.google.com/android/maven2/$1/$2/$3/$2-$3.apk"; }
+    echo "$file"
+  }
+  extra+=("$(fetch androidx/test orchestrator "$(version orchestrator)")")
+  extra+=("$(fetch androidx/test/services test-services "$(version testServices)")")
 fi
 
 pids=()
@@ -24,4 +31,5 @@ for d in $(devices); do
   ) &
   pids+=($!)
 done
+(( ${#pids[@]} > 0 )) || { echo "нет запущенных эмуляторов" >&2; exit 1; }
 for p in "${pids[@]}"; do wait "$p"; done

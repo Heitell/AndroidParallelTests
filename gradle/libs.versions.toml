@@ -15,8 +15,14 @@ androidxTestRules = "1.7.0"
 androidxTestExtJunit = "1.3.0"
 orchestrator = "1.6.1"
 testServices = "1.6.0"
+espresso = "3.7.0"
+testParameterInjector = "1.24"
+adam = "0.5.10"
 
 [libraries]
+adam-test-annotation-producer = { module = "com.malinskiy.adam:android-junit4-test-annotation-producer", version.ref = "adam" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+test-parameter-injector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "testParameterInjector" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }

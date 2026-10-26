@@ -7,6 +7,10 @@ import signal
 import subprocess
 import sys
 import time
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from tools import ADB  # noqa: E402
 
 APP = "com.example.catalog"
 stop = False
@@ -30,14 +34,14 @@ def main(out):
     info = {}
     while not stop:
         now = round(time.time() - t0, 1)
-        for line in sh("adb", "devices").splitlines():
+        for line in sh(ADB, "devices").splitlines():
             if not line.startswith("emulator-") or not line.endswith("\tdevice"):
                 continue
             s = line.split()[0]
             d = info.setdefault(s, {"seen": now, "booted": None, "tests_start": None, "tests_end": None})
-            if d["booted"] is None and sh("adb", "-s", s, "shell", "getprop", "sys.boot_completed").strip() == "1":
+            if d["booted"] is None and sh(ADB, "-s", s, "shell", "getprop", "sys.boot_completed").strip() == "1":
                 d["booted"] = now
-            if d["booted"] is not None and sh("adb", "-s", s, "shell", "pidof", APP).strip():
+            if d["booted"] is not None and sh(ADB, "-s", s, "shell", "pidof", APP).strip():
                 d["tests_start"] = d["tests_start"] if d["tests_start"] is not None else now
                 d["tests_end"] = now
         time.sleep(1)

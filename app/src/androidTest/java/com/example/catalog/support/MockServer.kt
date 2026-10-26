@@ -1,6 +1,9 @@
 package com.example.catalog.support
 
+import android.content.Context
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.catalog.data.AppGraph
+import com.example.catalog.data.LastQuery
 import com.example.catalog.data.Item
 import com.example.catalog.data.ItemDetails
 import kotlinx.serialization.encodeToString
@@ -20,11 +23,19 @@ import java.util.concurrent.atomic.AtomicInteger
  * Заглушка сервера прямо на устройстве. Своя на каждый тест: свой порт, свои ответы.
  * Ответы выбираются по пути запроса, поэтому не зависят от порядка запросов.
  */
-class MockServerRule(private val timeoutMs: Long = 20_000) : ExternalResource() {
+class MockServerRule(
+    private val timeoutMs: Long = 20_000,
+    /** Ответы, которые нужны до запуска экрана, — когда экран стартует раньше тела теста. */
+    private val setup: Routes.() -> Unit = {},
+) : ExternalResource() {
     private val server = MockWebServer()
     val routes = Routes()
 
     override fun before() {
+        // Каждый тест начинает с чистого приложения: без запросов, сохранённых предыдущим тестом.
+        InstrumentationRegistry.getInstrumentation().targetContext
+            .getSharedPreferences(LastQuery.FILE, Context.MODE_PRIVATE).edit().clear().commit()
+        routes.setup()
         server.dispatcher = routes
         server.start()
         AppGraph.configure(server.url("/api/").toString(), timeoutMs)

@@ -74,6 +74,10 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.test.parameter.injector)
+    // Для Marathon: передаёт аннотации тестов его парсеру на устройстве (отбор по @Smoke и т.п.).
+    androidTestImplementation(libs.adam.test.annotation.producer)
     androidTestUtil(libs.androidx.test.orchestrator)
     androidTestUtil(libs.androidx.test.services)
 }

@@ -1,0 +1,3 @@
+com.example.catalog.tests.extra.AnnotatedTest#smokeOpensLastItem
+com.example.catalog.tests.extra.AnnotatedTest#smokeOpensFirstItem
+com.example.catalog.tests.extra.AnnotatedTest#smokeListIsShown
