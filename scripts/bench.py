@@ -59,6 +59,10 @@ def sh(cmd, cwd=ROOT, env=None, log=None, timeout=STEP_TIMEOUT):
             proc.wait()
             out.write(f"\n[bench] остановлено по таймауту {timeout} с: {' '.join(cmd)}\n")
             rc = 124
+            if cmd[0] == "./gradlew":
+                # Тесты гоняет демон Gradle, а не ./gradlew: гасим и его, и эмуляторы GMD (AVD dev35_*).
+                subprocess.run(["./gradlew", "--stop"], cwd=cwd, stdout=out, stderr=subprocess.STDOUT, timeout=120)
+                subprocess.run(["pkill", "-f", "qemu-system.* -avd dev35_"], stdout=out, stderr=subprocess.STDOUT)
     return rc, time.time() - t0
 
 
