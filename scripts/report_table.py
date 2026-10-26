@@ -37,11 +37,13 @@ def fmt(v, digits=0):
 
 def timing_ok(r):
     """Прогон годится для таблицы времени: все тесты на месте ровно по разу, без ошибок замера.
-    Неверно показанные пропуски (ошибка отчёта, не запуска) время не портят."""
+    Неверно показанные или скрытые пропуски (ошибка отчёта, не запуска) время не портят."""
     if "expected" not in r:  # старый CSV на 40 тестах
         return r["ok"] == "1"
     zero = lambda k: r.get(k, "0") in ("0", "")
-    return (r["tests"] == r["expected"] and r["runs"] == r["expected"] and zero("missing") and zero("extra")
+    # Скрытый пропуск (класс под @Ignore не показан в отчёте) тест не теряет: время честное.
+    hidden = int(r.get("skipped_hidden") or 0)
+    return (int(r["tests"]) + hidden == int(r["expected"]) and r["runs"] == r["tests"] and zero("missing") and zero("extra")
             and zero("duplicates") and not r.get("error") and int(r.get("c_runs") or 0) <= int(r["expected"]))
 
 

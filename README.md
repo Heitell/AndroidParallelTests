@@ -10,8 +10,8 @@
 - `app/src/androidTest/` — 123 UI-теста. Каждый тест поднимает свой MockWebServer прямо на устройстве и подставляет его адрес в приложение (`AppGraph.configure`). Медленная сеть изображается задержкой ответа (`support/MockServer.kt`, объект `Net`).
   - `tests/` — 40 тестов в шести классах, написаны одинаково: общий базовый класс `BaseTest`.
   - `tests/extra/` — 83 теста, написанные по-разному: правило от экрана, Espresso вместе с Compose, параметризация JUnit и TestParameterInjector, тесты в абстрактном родителе, вложенные классы, `@Ignore` и `assume`, метки `@SmallTest`/`@LargeTest`/`@Smoke`, тест на Java, таймауты JUnit, один длинный сценарий и много коротких. На таких тестах способы запуска ошибаются чаще всего.
-- `scripts/` — запуск эмуляторов, каждого способа и замера.
-- `marathon/Marathonfile` — настройка Marathon.
+- `scripts/` — запуск эмуляторов, каждого способа, замера и матрицы поломок. Каждый запуск `am instrument` идёт через `scripts/instrument.py`: он пишет JUnit XML, обрывает зависший запуск сторожем (`--timeout`, по умолчанию 1800 с) и после обрыва дозапускает тесты, до которых не дошло дело.
+- `marathon/Marathonfile` — настройка Marathon. Список тестов Marathon берёт у раннера на устройстве (`testParserConfiguration: remote`): парсер по умолчанию не видит параметризованных тестов.
 
 Открытый HTTP к `localhost` разрешён только в сборке debug (`app/src/debug`).
 
@@ -57,6 +57,8 @@ scripts/emulators.sh stop
 python3 -I scripts/check_results.py --reference out/reference.txt out/B4
 ```
 
-Замер всех способов: `python3 -I scripts/bench.py --reps 3` (несколько часов). Результат — `docs/results/bench.csv`.
+Замер всех способов: `python3 -I scripts/bench.py --reps 3` (несколько часов). Результат — `docs/results/bench.csv`, замер на первых 40 тестах — `docs/results/bench-40.csv`.
+
+Матрица поломок: `python3 -I scripts/mutations.py` (поломки ставятся поверх коммита и откатываются после прогона; рабочее дерево в `app/` должно быть чистым). Результат — `docs/results/mutations-<поломка>.csv`.
 
 Важно: шардинг Gradle Managed Devices сломан в AGP 9.4.0 и 9.4.1, каждый шард гоняет все тесты. Проект собирается на AGP 9.4.1, а способ C замер гоняет на AGP 9.3.3 в отдельной копии проекта. Подробности — в отчёте.
