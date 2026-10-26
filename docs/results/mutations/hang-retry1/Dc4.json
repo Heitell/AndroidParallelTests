@@ -1,0 +1,28 @@
+{
+ "expected": 123,
+ "found": 123,
+ "runs": 123,
+ "missing": [],
+ "skipped_hidden": [],
+ "extra": [],
+ "duplicates": [],
+ "skipped_wrong": [],
+ "skipped_unexpected": [],
+ "failed": [
+  "com.example.catalog.tests.extra.ActivityRuleTest#backButtonReturnsToList",
+  "com.example.catalog.tests.extra.ActivityRuleTest#detailsSurviveRecreation",
+  "com.example.catalog.tests.extra.ActivityRuleTest#listIsShownOnStart",
+  "com.example.catalog.tests.extra.ActivityRuleTest#opensDetailsOfTappedItem",
+  "com.example.catalog.tests.extra.ActivityRuleTest#startMakesExactlyOneListRequest",
+  "com.example.catalog.tests.extra.LongFlowTest#fullJourneyOnSlowNetwork"
+ ],
+ "aborted": [],
+ "failed_unexpected": [
+  "com.example.catalog.tests.extra.ActivityRuleTest#backButtonReturnsToList",
+  "com.example.catalog.tests.extra.ActivityRuleTest#detailsSurviveRecreation",
+  "com.example.catalog.tests.extra.ActivityRuleTest#listIsShownOnStart",
+  "com.example.catalog.tests.extra.ActivityRuleTest#startMakesExactlyOneListRequest"
+ ],
+ "failed_missing": [],
+ "ok": false
+}

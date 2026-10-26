@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="6" failures="4" errors="0" skipped="0" time="0.000" timestamp="2026-10-26T14:19:49" hostname="localhost">
+  <testsuite name="com.example.catalog.tests.extra.SkippedTest" tests="6" failures="4" errors="0" skipped="0" time="1.455" timestamp="2026-10-26T14:19:49" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="alsoRunsNormally" classname="com.example.catalog.tests.extra.SkippedTest" time="0.776" />
+    <testcase name="assumptionFailsAfterLaunch" classname="com.example.catalog.tests.extra.SkippedTest" time="0.370">
+      <failure>org.junit.AssumptionViolatedException: пропуск по условию после запуска экрана
+	at org.junit.Assume.assumeTrue(Assume.java:68)
+	at com.example.catalog.tests.extra.SkippedTest.assumptionFailsAfterLaunch(SkippedTest.kt:50)
+</failure>
+    </testcase>
+    <testcase name="ignoredOne" classname="com.example.catalog.tests.extra.SkippedTest" time="0.000">
+      <failure></failure>
+    </testcase>
+    <testcase name="ignoredTwo" classname="com.example.catalog.tests.extra.SkippedTest" time="0.000">
+      <failure></failure>
+    </testcase>
+    <testcase name="assumptionFailsBeforeWork" classname="com.example.catalog.tests.extra.SkippedTest" time="0.011">
+      <failure>org.junit.AssumptionViolatedException: пропуск по условию до работы
+	at org.junit.Assume.assumeTrue(Assume.java:68)
+	at com.example.catalog.tests.extra.SkippedTest.assumptionFailsBeforeWork(SkippedTest.kt:43)
+</failure>
+    </testcase>
+    <testcase name="runsNormally" classname="com.example.catalog.tests.extra.SkippedTest" time="0.298" />
+  </testsuite>
+</testsuites>

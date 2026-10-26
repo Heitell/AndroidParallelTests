@@ -1,0 +1,2 @@
+rep,case,method,n,boot_s,install_s,run_s,total_s,expected,tests,runs,failed,duplicates,missing,skipped_hidden,extra,skipped_wrong,failed_unexpected,failed_missing,aborted,test_sum_s,busiest_s,idlest_s,cpu_avg_pct,cpu_max_pct,mem_free_min_pct,started_at,error,c_runs,shards,ok
+1,Bo4,Bo,4,20.4,1.5,728.5,750.4,123,122,122,2,0,0,1,0,0,0,0,2,1510.3,629.7,125.8,11,72,43,2026-10-27 03:05:52,,,,1

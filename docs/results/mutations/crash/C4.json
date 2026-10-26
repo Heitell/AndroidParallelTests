@@ -1,0 +1,20 @@
+{
+ "expected": 123,
+ "found": 123,
+ "runs": 123,
+ "missing": [],
+ "skipped_hidden": [],
+ "extra": [],
+ "duplicates": [],
+ "skipped_wrong": [],
+ "skipped_unexpected": [],
+ "failed": [
+  "com.example.catalog.tests.DetailsTest#detailsShowOutOfStock",
+  "com.example.catalog.tests.extra.EspressoInteropTest#reopenDifferentItemAfterBack",
+  "com.example.catalog.tests.extra.JavaStyleTest#detailsShowPrice"
+ ],
+ "aborted": [],
+ "failed_unexpected": [],
+ "failed_missing": [],
+ "ok": true
+}

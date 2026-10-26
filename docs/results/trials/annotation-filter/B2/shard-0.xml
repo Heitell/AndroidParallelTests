@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="emulator-5554" tests="1" failures="0" skipped="0"><testcase classname="com.example.catalog.tests.extra.AnnotatedTest" name="smokeListIsShown" time="2.593" /></testsuite>

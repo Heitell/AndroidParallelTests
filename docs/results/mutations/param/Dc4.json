@@ -1,0 +1,19 @@
+{
+ "expected": 123,
+ "found": 123,
+ "runs": 123,
+ "missing": [],
+ "skipped_hidden": [],
+ "extra": [],
+ "duplicates": [],
+ "skipped_wrong": [],
+ "skipped_unexpected": [],
+ "failed": [
+  "com.example.catalog.tests.extra.InjectedParamsTest#listPrice[CENTS]",
+  "com.example.catalog.tests.extra.ParameterizedSearchTest#search[3]"
+ ],
+ "aborted": [],
+ "failed_unexpected": [],
+ "failed_missing": [],
+ "ok": true
+}

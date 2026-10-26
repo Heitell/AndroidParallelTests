@@ -1,0 +1,3 @@
+rep,case,method,n,boot_s,install_s,run_s,total_s,expected,tests,runs,failed,duplicates,missing,skipped_hidden,extra,skipped_wrong,failed_unexpected,failed_missing,aborted,test_sum_s,busiest_s,idlest_s,cpu_avg_pct,cpu_max_pct,mem_free_min_pct,started_at,error,c_runs,shards,ok
+1,D4,D,4,20.4,,189.9,210.3,123,123,123,3,0,0,0,0,0,0,0,0,572.3,,,34,83,43,2026-10-27 01:56:31,,,,1
+1,Dc4,Dc,4,20.4,,163.4,183.8,123,123,123,3,0,0,0,0,0,0,0,0,516.6,,,23,75,45,2026-10-27 02:00:13,,,,1

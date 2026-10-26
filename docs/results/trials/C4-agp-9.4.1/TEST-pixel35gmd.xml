@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="40" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-10-26T12:12:39" hostname="localhost">
+  <testsuite name="com.example.catalog.tests.CatalogListTest" tests="8" failures="0" errors="0" skipped="0" time="44.010" timestamp="2026-10-26T12:12:39" hostname="localhost">
+    <properties>
+      <property name="device" value="_app_pixel35gmdDebugAndroidTest_3" />
+    </properties>
+    <testcase name="showsItemTitle" classname="com.example.catalog.tests.CatalogListTest" time="9.299" />
+    <testcase name="requestsItemsWithoutQuery" classname="com.example.catalog.tests.CatalogListTest" time="6.607" />
+    <testcase name="formatsPrice" classname="com.example.catalog.tests.CatalogListTest" time="3.972" />
+    <testcase name="showsAllItemsFromServer" classname="com.example.catalog.tests.CatalogListTest" time="4.666" />
+    <testcase name="showsCategory" classname="com.example.catalog.tests.CatalogListTest" time="3.607" />
+    <testcase name="showsLoadingWhileRequestInFlight" classname="com.example.catalog.tests.CatalogListTest" time="6.366" />
+    <testcase name="emptyListShowsEmptyState" classname="com.example.catalog.tests.CatalogListTest" time="3.764" />
+    <testcase name="scrollsToLastItemInLongList" classname="com.example.catalog.tests.CatalogListTest" time="5.729" />
+  </testsuite>
+  <testsuite name="com.example.catalog.tests.DetailsTest" tests="7" failures="0" errors="0" skipped="0" time="54.802" timestamp="2026-10-26T12:12:39" hostname="localhost">
+    <properties>
+      <property name="device" value="_app_pixel35gmdDebugAndroidTest_3" />
+    </properties>
+    <testcase name="detailsShowOutOfStock" classname="com.example.catalog.tests.DetailsTest" time="8.009" />
+    <testcase name="tapOpensDetails" classname="com.example.catalog.tests.DetailsTest" time="8.107" />
+    <testcase name="missingItemShowsNotFound" classname="com.example.catalog.tests.DetailsTest" time="8.540" />
+    <testcase name="detailsRequestItemById" classname="com.example.catalog.tests.DetailsTest" time="8.524" />
+    <testcase name="backReturnsToList" classname="com.example.catalog.tests.DetailsTest" time="7.332" />
+    <testcase name="detailsShowDescription" classname="com.example.catalog.tests.DetailsTest" time="7.247" />
+    <testcase name="detailsShowTitleAndPrice" classname="com.example.catalog.tests.DetailsTest" time="7.043" />
+  </testsuite>
+  <testsuite name="com.example.catalog.tests.ErrorHandlingTest" tests="8" failures="0" errors="0" skipped="0" time="29.423" timestamp="2026-10-26T12:12:39" hostname="localhost">
+    <properties>
+      <property name="device" value="_app_pixel35gmdDebugAndroidTest_3" />
+    </properties>
+    <testcase name="retryAfterServerErrorShowsItems" classname="com.example.catalog.tests.ErrorHandlingTest" time="4.524" />
+    <testcase name="retryShowsLoadingAgain" classname="com.example.catalog.tests.ErrorHandlingTest" time="4.605" />
+    <testcase name="serverErrorShowsMessage" classname="com.example.catalog.tests.ErrorHandlingTest" time="2.358" />
+    <testcase name="detailsErrorRetrySucceeds" classname="com.example.catalog.tests.ErrorHandlingTest" time="6.516" />
+    <testcase name="malformedJsonShowsUnexpectedResponse" classname="com.example.catalog.tests.ErrorHandlingTest" time="2.418" />
+    <testcase name="droppedConnectionShowsNoConnection" classname="com.example.catalog.tests.ErrorHandlingTest" time="0.320" />
+    <testcase name="silentServerShowsTimeout" classname="com.example.catalog.tests.ErrorHandlingTest" time="6.447" />
+    <testcase name="serviceUnavailableShowsMessage" classname="com.example.catalog.tests.ErrorHandlingTest" time="2.235" />
+  </testsuite>
+  <testsuite name="com.example.catalog.tests.RefreshTest" tests="5" failures="0" errors="0" skipped="0" time="34.590" timestamp="2026-10-26T12:12:39" hostname="localhost">
+    <properties>
+      <property name="device" value="_app_pixel35gmdDebugAndroidTest_3" />
+    </properties>
+    <testcase name="listStaysVisibleDuringRefresh" classname="com.example.catalog.tests.RefreshTest" time="4.466" />
+    <testcase name="refreshShowsUpdatedData" classname="com.example.catalog.tests.RefreshTest" time="8.329" />
+    <testcase name="pullToRefreshRequestsAgain" classname="com.example.catalog.tests.RefreshTest" time="4.531" />
+    <testcase name="refreshKeepsSearchQuery" classname="com.example.catalog.tests.RefreshTest" time="8.820" />
+    <testcase name="failedRefreshShowsError" classname="com.example.catalog.tests.RefreshTest" time="8.444" />
+  </testsuite>
+  <testsuite name="com.example.catalog.tests.SearchTest" tests="8" failures="0" errors="0" skipped="0" time="50.457" timestamp="2026-10-26T12:12:39" hostname="localhost">
+    <properties>
+      <property name="device" value="_app_pixel35gmdDebugAndroidTest_3" />
+    </properties>
+    <testcase name="searchWithNoResultsShowsEmptyState" classname="com.example.catalog.tests.SearchTest" time="7.148" />
+    <testcase name="searchShowsFilteredResults" classname="com.example.catalog.tests.SearchTest" time="6.833" />
+    <testcase name="searchTrimsWhitespace" classname="com.example.catalog.tests.SearchTest" time="6.822" />
+    <testcase name="clearButtonAppearsWhenTyping" classname="com.example.catalog.tests.SearchTest" time="2.659" />
+    <testcase name="clearResetsQueryAndReloadsFullList" classname="com.example.catalog.tests.SearchTest" time="8.731" />
+    <testcase name="blankQueryLoadsFullList" classname="com.example.catalog.tests.SearchTest" time="4.716" />
+    <testcase name="imeSearchActionTriggersSearch" classname="com.example.catalog.tests.SearchTest" time="6.912" />
+    <testcase name="searchSendsQueryParameter" classname="com.example.catalog.tests.SearchTest" time="6.636" />
+  </testsuite>
+  <testsuite name="com.example.catalog.tests.SlowNetworkTest" tests="4" failures="0" errors="0" skipped="0" time="53.907" timestamp="2026-10-26T12:12:39" hostname="localhost">
+    <properties>
+      <property name="device" value="_app_pixel35gmdDebugAndroidTest_3" />
+    </properties>
+    <testcase name="loadingStaysDuringSlowResponse" classname="com.example.catalog.tests.SlowNetworkTest" time="12.406" />
+    <testcase name="slowDetailsEventuallyLoad" classname="com.example.catalog.tests.SlowNetworkTest" time="14.460" />
+    <testcase name="slowSearchEventuallyLoads" classname="com.example.catalog.tests.SlowNetworkTest" time="14.664" />
+    <testcase name="slowListEventuallyLoads" classname="com.example.catalog.tests.SlowNetworkTest" time="12.377" />
+  </testsuite>
+</testsuites>

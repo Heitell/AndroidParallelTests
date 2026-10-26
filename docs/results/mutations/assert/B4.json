@@ -1,0 +1,22 @@
+{
+ "expected": 123,
+ "found": 123,
+ "runs": 123,
+ "missing": [],
+ "skipped_hidden": [],
+ "extra": [],
+ "duplicates": [],
+ "skipped_wrong": [],
+ "skipped_unexpected": [],
+ "failed": [
+  "com.example.catalog.tests.CatalogListTest#showsItemTitle",
+  "com.example.catalog.tests.DetailsTest#detailsShowTitleAndPrice",
+  "com.example.catalog.tests.extra.AnnotatedTest#largeOnly",
+  "com.example.catalog.tests.extra.AnnotatedTest#mediumOnly",
+  "com.example.catalog.tests.extra.JavaStyleTest#opensDetails"
+ ],
+ "aborted": [],
+ "failed_unexpected": [],
+ "failed_missing": [],
+ "ok": true
+}
