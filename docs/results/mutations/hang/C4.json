@@ -1,0 +1,48 @@
+{
+ "expected": 123,
+ "found": 96,
+ "runs": 96,
+ "missing": [
+  "com.example.catalog.tests.extra.ActivityRuleTest#backButtonReturnsToList",
+  "com.example.catalog.tests.extra.AnnotatedTest#smokeListIsShown",
+  "com.example.catalog.tests.extra.EnclosedTest$Errors#unavailable",
+  "com.example.catalog.tests.extra.EspressoInteropTest#systemBackKeepsListContent",
+  "com.example.catalog.tests.extra.InjectedParamsTest#listPrice[CENTS]",
+  "com.example.catalog.tests.extra.InjectedParamsTest#listPrice[CHEAP]",
+  "com.example.catalog.tests.extra.InjectedParamsTest#stockLabel[inStock=true]",
+  "com.example.catalog.tests.extra.JavaStyleTest#listShowsAllItems",
+  "com.example.catalog.tests.extra.LongListTest#firstItemIsVisible",
+  "com.example.catalog.tests.extra.LongListTest#lastItemIsReachable",
+  "com.example.catalog.tests.extra.LongListTest#lastItemOpensDetails",
+  "com.example.catalog.tests.extra.ParameterizedSearchTest#search[2]",
+  "com.example.catalog.tests.extra.ParameterizedSearchTest#search[3]",
+  "com.example.catalog.tests.extra.ParameterizedSearchTest#search[4]",
+  "com.example.catalog.tests.extra.ParameterizedSearchTest#search[7]",
+  "com.example.catalog.tests.extra.ParameterizedSearchTest#search[8]",
+  "com.example.catalog.tests.extra.QuickChecksTest#categoryOfFirst",
+  "com.example.catalog.tests.extra.QuickChecksTest#fiveItems",
+  "com.example.catalog.tests.extra.QuickChecksTest#retryIsShownOnError",
+  "com.example.catalog.tests.extra.QuickChecksTest#retryMakesSecondRequest",
+  "com.example.catalog.tests.extra.QuickChecksTest#searchFieldIsShown",
+  "com.example.catalog.tests.extra.QuickChecksTest#serverErrorMessage",
+  "com.example.catalog.tests.extra.ShortListTest#firstItemIsVisible",
+  "com.example.catalog.tests.extra.SkippedTest#alsoRunsNormally",
+  "com.example.catalog.tests.extra.TimeoutTest#withTimeoutParameter"
+ ],
+ "skipped_hidden": [
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsBeforeWork",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredTwo"
+ ],
+ "extra": [],
+ "duplicates": [],
+ "skipped_wrong": [],
+ "skipped_unexpected": [],
+ "failed": [],
+ "aborted": [],
+ "failed_unexpected": [],
+ "failed_missing": [
+  "com.example.catalog.tests.extra.ActivityRuleTest#opensDetailsOfTappedItem",
+  "com.example.catalog.tests.extra.LongFlowTest#fullJourneyOnSlowNetwork"
+ ],
+ "ok": false
+}

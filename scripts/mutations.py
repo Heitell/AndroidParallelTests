@@ -28,9 +28,16 @@ MUTATIONS = {
                    T + "extra.JavaStyleTest#opensDetails", T + "extra.AnnotatedTest#mediumOnly",
                    T + "extra.AnnotatedTest#largeOnly"],
     },
-    # Приложение падает, когда показывает карточку товара №4. Процесс умирает посреди теста.
+    # Исключение при показе карточки товара №4. Его ловит правило Compose: тест красный, процесс жив.
     "crash": {
         "edits": [(DETAILS, CONTENT, CONTENT + '                check(s.item.id != 4) { "поломка: падение на товаре 4" }\n')],
+        "failed": [T + "DetailsTest#detailsShowOutOfStock", T + "extra.EspressoInteropTest#reopenDifferentItemAfterBack",
+                   T + "extra.JavaStyleTest#detailsShowPrice"],
+    },
+    # Процесс приложения умирает, когда показывает карточку товара №4: исключение в отдельном потоке
+    # правило Compose не ловит, раннер помечает текущий тест и процесс гибнет вместе с остатком запуска.
+    "kill": {
+        "edits": [(DETAILS, CONTENT, CONTENT + '                if (s.item.id == 4) Thread { error("поломка: процесс упал на товаре 4") }.start()\n')],
         "failed": [T + "DetailsTest#detailsShowOutOfStock", T + "extra.EspressoInteropTest#reopenDifferentItemAfterBack",
                    T + "extra.JavaStyleTest#detailsShowPrice"],
     },

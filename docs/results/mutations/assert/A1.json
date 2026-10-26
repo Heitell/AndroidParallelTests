@@ -1,0 +1,39 @@
+{
+ "expected": 123,
+ "found": 123,
+ "runs": 123,
+ "missing": [],
+ "skipped_hidden": [],
+ "extra": [],
+ "duplicates": [],
+ "skipped_wrong": [
+  "com.example.catalog.tests.extra.IgnoredClassTest#null",
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsAfterLaunch",
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsBeforeWork",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredOne",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredTwo"
+ ],
+ "skipped_unexpected": [],
+ "failed": [
+  "com.example.catalog.tests.CatalogListTest#showsItemTitle",
+  "com.example.catalog.tests.DetailsTest#detailsShowTitleAndPrice",
+  "com.example.catalog.tests.extra.AnnotatedTest#largeOnly",
+  "com.example.catalog.tests.extra.AnnotatedTest#mediumOnly",
+  "com.example.catalog.tests.extra.IgnoredClassTest#null",
+  "com.example.catalog.tests.extra.JavaStyleTest#opensDetails",
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsAfterLaunch",
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsBeforeWork",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredOne",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredTwo"
+ ],
+ "aborted": [],
+ "failed_unexpected": [
+  "com.example.catalog.tests.extra.IgnoredClassTest#null",
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsAfterLaunch",
+  "com.example.catalog.tests.extra.SkippedTest#assumptionFailsBeforeWork",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredOne",
+  "com.example.catalog.tests.extra.SkippedTest#ignoredTwo"
+ ],
+ "failed_missing": [],
+ "ok": false
+}
