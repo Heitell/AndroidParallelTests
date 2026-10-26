@@ -126,9 +126,9 @@ def run_with_resume(serial, extra, orchestrator, timeout, resume):
             break
         if not left:
             break
-        # Раннер сравнивает имя метода без набора параметров: для search[3] запускаем search
-        # и оставляем только те наборы, которых ещё нет в отчёте.
-        targets = sorted({cls if m == "null" else f"{cls}#{m.split('[', 1)[0]}" for cls, m in left})
+        # Тест с набором параметров (search[3], listPrice[ROUND]) раннер по имени не находит:
+        # такой класс запускаем целиком и оставляем только те тесты, которых ещё нет в отчёте.
+        targets = sorted({cls if m == "null" or "[" in m else f"{cls}#{m}" for cls, m in left})
         print(f"{serial}: дозапуск {len(left)} тестов после обрыва", file=sys.stderr)
         more, reason, tail = run(serial, without_selection(extra) + ["-e", "class", ",".join(targets)],
                                  orchestrator, timeout)
