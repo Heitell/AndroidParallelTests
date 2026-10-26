@@ -14,8 +14,12 @@ fi
 pids=()
 for d in $(devices); do
   (
-    for apk in "$APP_APK" "$TEST_APK" ${extra[@]+"${extra[@]}"}; do
+    for apk in "$APP_APK" "$TEST_APK"; do
       adb -s "$d" install -r -t -g "$apk" >/dev/null
+    done
+    # Как у Gradle: без --force-queryable тестовый процесс не видит Orchestrator.
+    for apk in ${extra[@]+"${extra[@]}"}; do
+      adb -s "$d" install -r -t -g --force-queryable "$apk" >/dev/null
     done
   ) &
   pids+=($!)
