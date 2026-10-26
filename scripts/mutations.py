@@ -1,7 +1,7 @@
 """Матрица поломок: каждая поломка ставится поверх коммита, все способы прогоняются по разу,
 сверка проверяет, что покраснели ровно ожидаемые тесты и ни один тест не потерялся.
 
-python3 -I scripts/mutations.py [--only assert,crash,hang,param] [--cases A1,B4,...] [--out docs/results/mutations.csv]
+python3 -I scripts/mutations.py [--only assert,crash,kill,hang,param] [--tag -retry1] [--cases A1,B4,...] [--out docs/results/mutations.csv]
 
 Рабочее дерево должно быть чистым: откат идёт через `git checkout` изменённых файлов.
 Копия проекта для способа C получает ту же поломку сама (bench.ensure_gmd_tree).
@@ -76,6 +76,7 @@ def main():
     p.add_argument("--only", default=",".join(MUTATIONS))
     p.add_argument("--cases", default=CASES)
     p.add_argument("--out", default=os.path.join(ROOT, "docs/results/mutations.csv"))
+    p.add_argument("--tag", default="", help="метка пробы: добавляется к имени CSV и каталога, чтобы не затереть основной прогон")
     a = p.parse_args()
     dirty = subprocess.run(["git", "status", "--porcelain", "--", "app", "gradle"], cwd=ROOT,
                            capture_output=True, text=True).stdout
@@ -91,8 +92,8 @@ def main():
             env = {**os.environ, **m.get("env", {})}
             # Строка CSV помечается поломкой через отдельный каталог и колонку case в журнале.
             subprocess.run([sys.executable, "-I", os.path.join(ROOT, "scripts", "bench.py"), "--reps", "1",
-                            "--cool", "10", "--cases", a.cases, "--out", a.out.replace(".csv", f"-{name}.csv"),
-                            "--work", os.path.join(ROOT, "bench-out", "mutations", name),
+                            "--cool", "10", "--cases", a.cases, "--out", a.out.replace(".csv", f"-{name}{a.tag}.csv"),
+                            "--work", os.path.join(ROOT, "bench-out", "mutations", name + a.tag),
                             "--expect-failed", ",".join(m["failed"])], cwd=ROOT, env=env, check=False)
         finally:
             revert(m["edits"])

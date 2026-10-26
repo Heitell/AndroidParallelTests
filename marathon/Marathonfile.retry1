@@ -1,0 +1,37 @@
+# Проба: как основной Marathonfile, но тест без статуса повторяется один раз (квота 1).
+# outputDir подменяет scripts/run_marathon.sh на каждый прогон.
+name: "AndroidParallelTests"
+outputDir: "../bench-out/marathon"
+analyticsTracking: false
+bugsnagReporting: false
+# Как и в остальных способах: без повторов и без защиты от нестабильных тестов.
+retryStrategy:
+  type: "no-retry"
+# Тесты без статуса (например, параметризованные, которых не нашёл парсер) по умолчанию
+# повторяются бесконечно. Как и у остальных способов — без повторов.
+uncompletedTestRetryQuota: 1
+flakinessStrategy:
+  type: "ignore"
+sortingStrategy:
+  type: "no-sorting"
+batchingStrategy:
+  type: "isolate"
+vendorConfiguration:
+  type: "Android"
+  applicationApk: "../app/build/outputs/apk/debug/app-debug.apk"
+  testApplicationApk: "../app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk"
+  autoGrantPermission: true
+  # Список тестов берётся у раннера на устройстве (-e log true). Парсер по умолчанию (local)
+  # читает байткод и не видит наборы параметризованных тестов: TestParameterInjector
+  # он запускает по кругу, а Parameterized JUnit гонит одной командой на одном эмуляторе.
+  testParserConfiguration:
+    type: "remote"
+    # Слушатель из библиотеки adam передаёт парсеру аннотации тестов — без него отбор по аннотации не работает.
+    instrumentationArgs:
+      listener: "com.malinskiy.adam.junit4.android.listener.TestAnnotationProducer"
+  screenRecordConfiguration:
+    preferableRecorderType: "screenshot"
+    videoConfiguration:
+      enabled: false
+    screenshotConfiguration:
+      enabled: false
