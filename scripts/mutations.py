@@ -8,6 +8,7 @@ python3 -I scripts/mutations.py [--only assert,crash,hang,param] [--cases A1,B4,
 """
 import argparse
 import os
+import signal
 import subprocess
 import sys
 
@@ -77,6 +78,8 @@ def main():
         m = MUTATIONS[name]
         print(f"== поломка {name}: ждём красными {len(m['failed'])}", flush=True)
         apply(m["edits"])
+        # Если замер оборвут, откат всё равно нужен: иначе поломка останется в рабочей копии.
+        signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
         try:
             env = {**os.environ, **m.get("env", {})}
             # Строка CSV помечается поломкой через отдельный каталог и колонку case в журнале.

@@ -35,10 +35,21 @@ def fmt(v, digits=0):
     return "—" if v is None else f"{v:.{digits}f}"
 
 
+def timing_ok(r):
+    """Прогон годится для таблицы времени: все тесты на месте ровно по разу, без ошибок замера.
+    Неверно показанные пропуски (ошибка отчёта, не запуска) время не портят."""
+    if "expected" not in r:  # старый CSV на 40 тестах
+        return r["ok"] == "1"
+    zero = lambda k: r.get(k, "0") in ("0", "")
+    return (r["tests"] == r["expected"] and r["runs"] == r["expected"] and zero("missing") and zero("extra")
+            and zero("duplicates") and not r.get("error") and int(r.get("c_runs") or 0) <= int(r["expected"]))
+
+
 def main(path):
     rows = list(csv.DictReader(open(path)))
-    bad = [r for r in rows if r["ok"] != "1"]
-    good = [r for r in rows if r["ok"] == "1"]
+    bad = [r for r in rows if not timing_ok(r)]
+    good = [r for r in rows if timing_ok(r)]
+    report_wrong = [r for r in good if r["ok"] != "1"]
     groups = {}
     for r in good:
         groups.setdefault((r["method"], int(r["n"])), []).append(r)
@@ -47,7 +58,11 @@ def main(path):
 
     print(f"Прогонов: {len(rows)}, годных: {len(good)}, отбракованных: {len(bad)}")
     for r in bad:
-        print(f"  отбракован: круг {r['rep']} {r['case']} tests={r['tests']} runs={r['runs']} failed={r['failed']}")
+        print(f"  отбракован: круг {r['rep']} {r['case']} tests={r['tests']} runs={r['runs']} failed={r['failed']}"
+              f" missing={r.get('missing')} extra={r.get('extra')} error={r.get('error')}")
+    if report_wrong:
+        print("Годны для времени, но отчёт неверен (пропуски или падения показаны не так):",
+              sorted({r["case"] for r in report_wrong}))
     print()
     print("| Способ | Потоков | Всего, с | Загрузка, с | Установка, с | Тесты, с | Ускорение (всего) | Ускорение (тесты) | Прогонов |")
     print("|---|---:|---:|---:|---:|---:|---:|---:|---:|")

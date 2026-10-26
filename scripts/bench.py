@@ -140,6 +140,8 @@ def ensure_gmd_tree(log):
     if not os.path.isdir(GMD_TREE):
         git("worktree", "add", "--detach", GMD_TREE, head)
     git("checkout", "--", ".", cwd=GMD_TREE)
+    # Файлы, скопированные прошлым прогоном (новые тесты, поломки), мешают переключить коммит.
+    git("clean", "-fdq", "--", "app", "gradle", cwd=GMD_TREE)
     git("checkout", "--detach", head, cwd=GMD_TREE)
     patch = git("diff", "HEAD", "--binary", "--", "app", "gradle")
     if patch:
