@@ -4,7 +4,10 @@
 Тест, который начался и не закончился (упал процесс, оборвалась связь, сработал сторож),
 записывается красным. Если запуск оборвался, у <testsuite> стоит атрибут aborted с причиной.
 
-python3 -I scripts/instrument.py --serial emulator-5554 --out shard.xml [--orchestrator] [--timeout 1800] [-- -e key value ...]
+Если запуск оборвался, а эмулятор жив, тесты этого запуска, до которых дело не дошло, запускаются
+ещё раз отдельным запуском (дозапуск). Без него падение процесса или сторож теряют остаток шарда.
+
+python3 -I scripts/instrument.py --serial emulator-5554 --out shard.xml [--orchestrator] [--timeout 1800] [--no-resume] [-- -e key value ...]
 """
 import argparse
 import os
@@ -16,7 +19,7 @@ import time
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from tools import ADB, APP_ID, TEST_ID  # noqa: E402
+from tools import ADB, APP_ID, TEST_ID, alive, list_tests  # noqa: E402
 
 RUNNER = f"{TEST_ID}/androidx.test.runner.AndroidJUnitRunner"
 ORCHESTRATOR = "androidx.test.orchestrator/.AndroidTestOrchestrator"
@@ -96,6 +99,49 @@ def run(serial, extra, orchestrator, timeout):
     return results, reason, tail
 
 
+# Ключи отбора тестов: на дозапуске они заменяются списком оставшихся тестов.
+SELECTION = {"class", "notClass", "package", "notPackage", "numShards", "shardIndex", "tests_regex"}
+
+
+def without_selection(extra):
+    out, i = [], 0
+    while i < len(extra):
+        if extra[i] == "-e" and i + 1 < len(extra) and extra[i + 1] in SELECTION:
+            i += 3
+            continue
+        out.append(extra[i])
+        i += 1
+    return out
+
+
+def run_with_resume(serial, extra, orchestrator, timeout, resume):
+    results, reason, tail = run(serial, extra, orchestrator, timeout)
+    reasons = [reason] if reason else []
+    while reason and resume and alive(serial):
+        done = {(cls, name or "null") for cls, name, *_ in results}
+        try:
+            left = [t for t in list_tests(serial, extra) if t not in done]
+        except RuntimeError as e:
+            reasons.append(f"дозапуск невозможен: {e}")
+            break
+        if not left:
+            break
+        # Раннер сравнивает имя метода без набора параметров: для search[3] запускаем search
+        # и оставляем только те наборы, которых ещё нет в отчёте.
+        targets = sorted({cls if m == "null" else f"{cls}#{m.split('[', 1)[0]}" for cls, m in left})
+        print(f"{serial}: дозапуск {len(left)} тестов после обрыва", file=sys.stderr)
+        more, reason, tail = run(serial, without_selection(extra) + ["-e", "class", ",".join(targets)],
+                                 orchestrator, timeout)
+        more = [r for r in more if (r[0], r[1] or "null") in set(left)]
+        if not more:
+            reasons.append("дозапуск не дал ни одного результата")
+            break
+        results += more
+        if reason:
+            reasons.append("дозапуск: " + reason)
+    return results, "; ".join(reasons), tail
+
+
 def write_xml(path, serial, results, reason):
     suite = ET.Element("testsuite", name=serial, tests=str(len(results)),
                        failures=str(sum(1 for r in results if r[2] in (FAILURE, ERROR))),
@@ -119,9 +165,10 @@ def main():
     p.add_argument("--orchestrator", action="store_true")
     p.add_argument("--timeout", type=int, default=int(os.environ.get("INSTRUMENT_TIMEOUT", 1800)),
                    help="сторож: через сколько секунд остановить запуск")
+    p.add_argument("--no-resume", action="store_true", help="не дозапускать тесты после обрыва")
     p.add_argument("extra", nargs="*")
     a = p.parse_args()
-    results, reason, tail = run(a.serial, a.extra, a.orchestrator, a.timeout)
+    results, reason, tail = run_with_resume(a.serial, a.extra, a.orchestrator, a.timeout, not a.no_resume)
     write_xml(a.out, a.serial, results, reason)
     bad = sum(1 for r in results if r[2] in (FAILURE, ERROR))
     print(f"{a.serial}: tests={len(results)} failed={bad}" + (f" ОБОРВАН: {reason}" if reason else ""))

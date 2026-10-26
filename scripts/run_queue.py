@@ -12,15 +12,7 @@ import threading
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from tools import ADB, devices, list_tests  # noqa: E402
-
-
-def alive(serial):
-    try:
-        out = subprocess.run([ADB, "-s", serial, "get-state"], capture_output=True, text=True, timeout=30).stdout
-    except subprocess.TimeoutExpired:
-        return False
-    return out.strip() == "device"
+from tools import alive, devices, list_tests  # noqa: E402
 
 
 def main():

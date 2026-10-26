@@ -23,6 +23,15 @@ def devices():
     return sorted(found, key=lambda s: int(s.split("-")[1]))
 
 
+def alive(serial):
+    """Эмулятор отвечает adb и готов к работе."""
+    try:
+        out = subprocess.run([ADB, "-s", serial, "get-state"], capture_output=True, text=True, timeout=30).stdout
+    except subprocess.TimeoutExpired:
+        return False
+    return out.strip() == "device"
+
+
 def list_tests(serial, extra=()):
     """Тесты, которые раннер запустил бы с этими аргументами, без запуска: режим `-e log true`.
     Возвращает список (класс, метод) в порядке раннера. Падает, если перечисление не дошло до конца."""
