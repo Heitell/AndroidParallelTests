@@ -1,0 +1,26 @@
+# Способ D: Marathon. Пути считаются от каталога этого файла.
+# outputDir подменяет scripts/run_marathon.sh на каждый прогон.
+name: "AndroidParallelTests"
+outputDir: "../bench-out/marathon"
+analyticsTracking: false
+bugsnagReporting: false
+# Как и в остальных способах: без повторов и без защиты от нестабильных тестов.
+retryStrategy:
+  type: "no-retry"
+flakinessStrategy:
+  type: "ignore"
+sortingStrategy:
+  type: "no-sorting"
+batchingStrategy:
+  type: "isolate"
+vendorConfiguration:
+  type: "Android"
+  applicationApk: "../app/build/outputs/apk/debug/app-debug.apk"
+  testApplicationApk: "../app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk"
+  autoGrantPermission: true
+  screenRecordConfiguration:
+    preferableRecorderType: "screenshot"
+    videoConfiguration:
+      enabled: false
+    screenshotConfiguration:
+      enabled: false

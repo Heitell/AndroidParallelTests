@@ -7,3 +7,4 @@ build/
 .kotlin/
 captures/
 /bench-out/
+/marathon/Marathonfile.run

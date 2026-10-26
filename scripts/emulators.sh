@@ -11,9 +11,12 @@ start() {
   adb start-server >/dev/null 2>&1
   for ((i = 0; i < n; i++)); do
     local port=$((5554 + 2 * i))
-    # Холодный старт без сохранения снимка: одинаковые условия на каждый прогон.
+    # По умолчанию старт со снимка bench (scripts/make_snapshots.sh), снимок не перезаписывается.
+    # COLD=1 — холодный старт.
+    local boot=(-snapshot bench -no-snapshot-save)
+    [[ "${COLD:-0}" == "1" ]] && boot=(-no-snapshot)
     emulator -avd "${AVDS[$i]}" -port "$port" -no-window -no-audio -no-boot-anim \
-      -no-snapshot -gpu swiftshader_indirect >"$log_dir/${AVDS[$i]}.log" 2>&1 &
+      "${boot[@]}" -gpu "${EMU_GPU:-host}" >"$log_dir/${AVDS[$i]}.log" 2>&1 &
     sleep 5
   done
   local deadline=$(( $(date +%s) + 300 ))
@@ -23,9 +26,7 @@ start() {
       (( $(date +%s) < deadline )) || { echo "не загрузился $serial" >&2; exit 1; }
       sleep 2
     done
-    for key in window_animation_scale transition_animation_scale animator_duration_scale; do
-      adb -s "$serial" shell settings put global "$key" 0
-    done
+    animations_off "$serial"
   done
   echo "загружено: $(devices | wc -l | tr -d ' ')"
 }
